@@ -17,6 +17,7 @@ namespace GazeboYarpPlugins {
 
 class WorldInterfaceServer_makeSphere : public yarp::os::Portable {
 public:
+  double mass;
   double radius;
   Pose pose;
   Color color;
@@ -25,13 +26,14 @@ public:
   bool gravity_enable;
   bool collision_enable;
   std::string _return;
-  void init(const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
+  void init(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
   virtual bool write(yarp::os::ConnectionWriter& connection) const override;
   virtual bool read(yarp::os::ConnectionReader& connection) override;
 };
 
 class WorldInterfaceServer_makeBox : public yarp::os::Portable {
 public:
+  double mass;
   double width;
   double height;
   double thickness;
@@ -42,13 +44,14 @@ public:
   bool gravity_enable;
   bool collision_enable;
   std::string _return;
-  void init(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
+  void init(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
   virtual bool write(yarp::os::ConnectionWriter& connection) const override;
   virtual bool read(yarp::os::ConnectionReader& connection) override;
 };
 
 class WorldInterfaceServer_makeCylinder : public yarp::os::Portable {
 public:
+  double mass;
   double radius;
   double length;
   Pose pose;
@@ -58,7 +61,7 @@ public:
   bool gravity_enable;
   bool collision_enable;
   std::string _return;
-  void init(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
+  void init(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable);
   virtual bool write(yarp::os::ConnectionWriter& connection) const override;
   virtual bool read(yarp::os::ConnectionReader& connection) override;
 };
@@ -194,8 +197,9 @@ public:
 
 bool WorldInterfaceServer_makeSphere::write(yarp::os::ConnectionWriter& connection) const {
   yarp::os::idl::WireWriter writer(connection);
-  if (!writer.writeListHeader(15)) return false;
+  if (!writer.writeListHeader(16)) return false;
   if (!writer.writeTag("makeSphere",1,1)) return false;
+  if (!writer.writeFloat64(mass)) return false;
   if (!writer.writeFloat64(radius)) return false;
   if (!writer.write(pose)) return false;
   if (!writer.write(color)) return false;
@@ -216,8 +220,9 @@ bool WorldInterfaceServer_makeSphere::read(yarp::os::ConnectionReader& connectio
   return true;
 }
 
-void WorldInterfaceServer_makeSphere::init(const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+void WorldInterfaceServer_makeSphere::init(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   _return = "";
+  this->mass = mass;
   this->radius = radius;
   this->pose = pose;
   this->color = color;
@@ -229,8 +234,9 @@ void WorldInterfaceServer_makeSphere::init(const double radius, const Pose& pose
 
 bool WorldInterfaceServer_makeBox::write(yarp::os::ConnectionWriter& connection) const {
   yarp::os::idl::WireWriter writer(connection);
-  if (!writer.writeListHeader(17)) return false;
+  if (!writer.writeListHeader(18)) return false;
   if (!writer.writeTag("makeBox",1,1)) return false;
+  if (!writer.writeFloat64(mass)) return false;
   if (!writer.writeFloat64(width)) return false;
   if (!writer.writeFloat64(height)) return false;
   if (!writer.writeFloat64(thickness)) return false;
@@ -253,8 +259,9 @@ bool WorldInterfaceServer_makeBox::read(yarp::os::ConnectionReader& connection) 
   return true;
 }
 
-void WorldInterfaceServer_makeBox::init(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+void WorldInterfaceServer_makeBox::init(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   _return = "";
+  this->mass = mass;
   this->width = width;
   this->height = height;
   this->thickness = thickness;
@@ -268,8 +275,9 @@ void WorldInterfaceServer_makeBox::init(const double width, const double height,
 
 bool WorldInterfaceServer_makeCylinder::write(yarp::os::ConnectionWriter& connection) const {
   yarp::os::idl::WireWriter writer(connection);
-  if (!writer.writeListHeader(16)) return false;
+  if (!writer.writeListHeader(17)) return false;
   if (!writer.writeTag("makeCylinder",1,1)) return false;
+  if (!writer.writeFloat64(mass)) return false;
   if (!writer.writeFloat64(radius)) return false;
   if (!writer.writeFloat64(length)) return false;
   if (!writer.write(pose)) return false;
@@ -291,8 +299,9 @@ bool WorldInterfaceServer_makeCylinder::read(yarp::os::ConnectionReader& connect
   return true;
 }
 
-void WorldInterfaceServer_makeCylinder::init(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+void WorldInterfaceServer_makeCylinder::init(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   _return = "";
+  this->mass = mass;
   this->radius = radius;
   this->length = length;
   this->pose = pose;
@@ -639,32 +648,32 @@ void WorldInterfaceServer_rename::init(const std::string& old_name, const std::s
 WorldInterfaceServer::WorldInterfaceServer() {
   yarp().setOwner(*this);
 }
-std::string WorldInterfaceServer::makeSphere(const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+std::string WorldInterfaceServer::makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   std::string _return = "";
   WorldInterfaceServer_makeSphere helper;
-  helper.init(radius,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+  helper.init(mass,radius,pose,color,frame_name,object_name,gravity_enable,collision_enable);
   if (!yarp().canWrite()) {
-    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeSphere(const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
+    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
   }
   bool ok = yarp().write(helper,helper);
   return ok?helper._return:_return;
 }
-std::string WorldInterfaceServer::makeBox(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+std::string WorldInterfaceServer::makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   std::string _return = "";
   WorldInterfaceServer_makeBox helper;
-  helper.init(width,height,thickness,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+  helper.init(mass,width,height,thickness,pose,color,frame_name,object_name,gravity_enable,collision_enable);
   if (!yarp().canWrite()) {
-    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeBox(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
+    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
   }
   bool ok = yarp().write(helper,helper);
   return ok?helper._return:_return;
 }
-std::string WorldInterfaceServer::makeCylinder(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
+std::string WorldInterfaceServer::makeCylinder(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable) {
   std::string _return = "";
   WorldInterfaceServer_makeCylinder helper;
-  helper.init(radius,length,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+  helper.init(mass,radius,length,pose,color,frame_name,object_name,gravity_enable,collision_enable);
   if (!yarp().canWrite()) {
-    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeCylinder(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
+    yError("Missing server method '%s'?","std::string WorldInterfaceServer::makeCylinder(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)");
   }
   bool ok = yarp().write(helper,helper);
   return ok?helper._return:_return;
@@ -810,6 +819,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
   while (!reader.isError()) {
     // TODO: use quick lookup, this is just a test
     if (tag == "makeSphere") {
+      double mass;
       double radius;
       Pose pose;
       Color color;
@@ -817,6 +827,10 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
       std::string object_name;
       bool gravity_enable;
       bool collision_enable;
+      if (!reader.readFloat64(mass)) {
+        reader.fail();
+        return false;
+      }
       if (!reader.readFloat64(radius)) {
         reader.fail();
         return false;
@@ -842,7 +856,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
         collision_enable = 1;
       }
       std::string _return;
-      _return = makeSphere(radius,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+      _return = makeSphere(mass,radius,pose,color,frame_name,object_name,gravity_enable,collision_enable);
       yarp::os::idl::WireWriter writer(reader);
       if (!writer.isNull()) {
         if (!writer.writeListHeader(1)) return false;
@@ -852,6 +866,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
       return true;
     }
     if (tag == "makeBox") {
+      double mass;
       double width;
       double height;
       double thickness;
@@ -861,6 +876,10 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
       std::string object_name;
       bool gravity_enable;
       bool collision_enable;
+      if (!reader.readFloat64(mass)) {
+        reader.fail();
+        return false;
+      }
       if (!reader.readFloat64(width)) {
         reader.fail();
         return false;
@@ -894,7 +913,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
         collision_enable = 1;
       }
       std::string _return;
-      _return = makeBox(width,height,thickness,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+      _return = makeBox(mass,width,height,thickness,pose,color,frame_name,object_name,gravity_enable,collision_enable);
       yarp::os::idl::WireWriter writer(reader);
       if (!writer.isNull()) {
         if (!writer.writeListHeader(1)) return false;
@@ -904,6 +923,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
       return true;
     }
     if (tag == "makeCylinder") {
+      double mass;
       double radius;
       double length;
       Pose pose;
@@ -912,6 +932,10 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
       std::string object_name;
       bool gravity_enable;
       bool collision_enable;
+      if (!reader.readFloat64(mass)) {
+        reader.fail();
+        return false;
+      }
       if (!reader.readFloat64(radius)) {
         reader.fail();
         return false;
@@ -941,7 +965,7 @@ bool WorldInterfaceServer::read(yarp::os::ConnectionReader& connection) {
         collision_enable = 1;
       }
       std::string _return;
-      _return = makeCylinder(radius,length,pose,color,frame_name,object_name,gravity_enable,collision_enable);
+      _return = makeCylinder(mass,radius,length,pose,color,frame_name,object_name,gravity_enable,collision_enable);
       yarp::os::idl::WireWriter writer(reader);
       if (!writer.isNull()) {
         if (!writer.writeListHeader(1)) return false;
@@ -1274,7 +1298,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
   }
   else {
     if (functionName=="makeSphere") {
-      helpString.push_back("std::string makeSphere(const double radius, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
+      helpString.push_back("std::string makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a sphere. ");
       helpString.push_back("@param radius radius of the sphere [m] ");
       helpString.push_back("@param pose pose of the sphere [m] ");
@@ -1286,7 +1310,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
       helpString.push_back("@return returns a string that contains the name of the object in the world ");
     }
     if (functionName=="makeBox") {
-      helpString.push_back("std::string makeBox(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
+      helpString.push_back("std::string makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a box. ");
       helpString.push_back("@param width box width [m] ");
       helpString.push_back("@param height box height[m] ");
@@ -1300,7 +1324,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
       helpString.push_back("@return returns a string that contains the name of the object in the world ");
     }
     if (functionName=="makeCylinder") {
-      helpString.push_back("std::string makeCylinder(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
+      helpString.push_back("std::string makeCylinder(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a cylinder. ");
       helpString.push_back("@param radius radius of the cylinder [m] ");
       helpString.push_back("@param length lenght of the cylinder [m] ");

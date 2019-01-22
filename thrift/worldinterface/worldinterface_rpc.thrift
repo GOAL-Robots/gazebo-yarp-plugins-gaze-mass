@@ -34,7 +34,7 @@ service WorldInterfaceServer {
     * @param collision_enable (optional) enables collision (default true)
     * @return returns a string that contains the name of the object in the world
     */ 
-    string makeSphere (1: double radius, 2: Pose pose, 3: Color color, 4: string frame_name="", 5: string object_name="", 6: bool gravity_enable=0, 7: bool collision_enable=1);
+    string makeSphere (1: double mass ,2: double radius, 3: Pose pose, 4: Color color, 5: string frame_name="", 6: string object_name="", 7: bool gravity_enable=0, 8: bool collision_enable=1);
     
     
     /** 
@@ -50,7 +50,7 @@ service WorldInterfaceServer {
     * @param collision_enable (optional) enables collision (default true)
     * @return returns a string that contains the name of the object in the world
     */
-    string makeBox (1: double width, 2: double height, 3: double thickness, 4: Pose pose, 5: Color color, 6: string frame_name="", 7: string object_name="", 8: bool gravity_enable=0, 9: bool collision_enable=1);
+    string makeBox (1: double mass ,2: double width, 3: double height, 4: double thickness, 5: Pose pose, 6: Color color, 7: string frame_name="", 8: string object_name="", 9: bool gravity_enable=0, 10: bool collision_enable=1);
     
     /** 
     * Make a cylinder.
@@ -64,7 +64,7 @@ service WorldInterfaceServer {
     * @param collision_enable (optional) enables collision (default true)
     * @return returns a string that contains the name of the object in the world
     */
-    string makeCylinder (1: double radius, 2: double length, 3: Pose pose, 4: Color color, 5: string frame_name="", 6: string object_name="", 7: bool gravity_enable=0, 8: bool collision_enable=1);
+    string makeCylinder (1: double mass, 2: double radius, 3: double length, 4: Pose pose, 5: Color color, 6: string frame_name="", 7: string object_name="", 8: bool gravity_enable=0, 9: bool collision_enable=1);
     
     /** 
     * Make a reference frame.

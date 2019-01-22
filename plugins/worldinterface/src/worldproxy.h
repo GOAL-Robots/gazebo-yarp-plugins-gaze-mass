@@ -105,7 +105,7 @@ public:
    * @param color color of the sphere
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeSphere(const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable);
+  virtual std::string makeSphere(const double mass,const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable);
   /**
    * Make a shpere.
    * @param width box width [m]
@@ -115,7 +115,7 @@ public:
    * @param color color of the box
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeBox(const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable);
+  virtual std::string makeBox(const double mass ,const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable);
   /**
    * Make a cylinder.
    * @param radius radius of the cylinder [m]
@@ -124,7 +124,7 @@ public:
    * @param color color of the cylinder
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeCylinder(const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable );
+  virtual std::string makeCylinder(const double mass, const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable );
   /**
    * Set new object pose.
    * @param id object id
@@ -160,7 +160,7 @@ public:
    * @return returns true/false on success failure.
    */
   virtual bool deleteObject(const std::string& id);
-  
+
     /**
    * Make a reference frame.
    * @param size size of the frame [m]
@@ -176,7 +176,7 @@ public:
    * @return returns true or false on success failure
    */
   virtual bool changeColor(const std::string& id, const GazeboYarpPlugins::Color& color);
-  
+
   /**
    * Delete all objects in the world.
    */
@@ -201,22 +201,22 @@ public:
    * @return true if success, false otherwise
    */
   virtual bool attach(const std::string& id, const std::string& link_name);
-  
+
    /**
    * Detach a previously attached object.
    * @param id string that identifies object in gazebo (returned after creation)
    * @return true if success, false otherwise
    */
   virtual bool detach(const std::string& id);
-  
+
    /**
    * Change the names of an object.
-   * @param old_name string that identifies object in gazebo 
+   * @param old_name string that identifies object in gazebo
    * @param new_name string that will be used as new name
    * @return true if success, false otherwise
    */
   virtual bool rename(const std::string& old_name, const std::string& new_name);
-  
+
   void attachWorldPointer(gazebo::physics::WorldPtr p)
   {
     world=p;
@@ -254,7 +254,7 @@ public:
   {
     isSynchro=f;
   }
-  
+
   gazebo::physics::LinkPtr HELPER_getLinkInModel(gazebo::physics::ModelPtr model, std::string link_name);
   gazebo::physics::LinkPtr HELPER_getLink(std::string full_scoped_link_name);
   bool HELPER_hasEnding (std::string const &fullString, std::string const &ending);

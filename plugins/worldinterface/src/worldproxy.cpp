@@ -60,7 +60,7 @@ sdf::ElementPtr getSDFRoot(sdf::SDF &sdfObj)
 #endif
 }
 
-std::string WorldProxy::makeSphere(const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable)
+std::string WorldProxy::makeSphere(const double mass,const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable)
 {
   sdf::SDF sphereSDF;
 
@@ -86,6 +86,9 @@ std::string WorldProxy::makeSphere(const double radius, const GazeboYarpPlugins:
                   </material>\
               </visual>\
               <gravity>GRAVITY</gravity>\
+              <inertial>\
+                   <mass>MASS</mass>\
+              </inertial>\
             </link>\
           </model>\
         </sdf>");
@@ -134,12 +137,13 @@ std::string WorldProxy::makeSphere(const double radius, const GazeboYarpPlugins:
   replace(sphereSDF_string, "RED", color.r/255.0);
   replace(sphereSDF_string, "GREEN", color.g/255.0);
   replace(sphereSDF_string, "BLUE", color.b/255.0);
+  replace(sphereSDF_string, "MASS", mass);
 
   sphereSDF.SetFromString(sphereSDF_string);
 
   int nobjects=++objects.count;
   ostringstream objlabel;
-  
+
   if(object_name!="")
   {
       objlabel << object_name;
@@ -176,7 +180,7 @@ std::string WorldProxy::makeSphere(const double radius, const GazeboYarpPlugins:
   return objlabel.str();
 }
 
-string WorldProxy::makeBox(const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable)
+string WorldProxy::makeBox(const double mass,const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable)
 {
   sdf::SDF boxSDF;
 
@@ -202,6 +206,9 @@ string WorldProxy::makeBox(const double width, const double height, const double
         </material>\
        </visual>\
        <gravity>GRAVITY</gravity>\
+       <inertial>\
+            <mass>MASS</mass>\
+       </inertial>\
        </link>\
       </model>\
   </sdf>");
@@ -244,6 +251,7 @@ string WorldProxy::makeBox(const double width, const double height, const double
   replace(boxSDF_String, "HEIGHT", height);
   replace(boxSDF_String, "THICKNESS", thickness);
 
+  replace(boxSDF_String, "MASS", mass);
   replace(boxSDF_String, "RED", color.r/255.0);
   replace(boxSDF_String, "GREEN", color.g/255.0);
   replace(boxSDF_String, "BLUE", color.b/255.0);
@@ -291,7 +299,7 @@ string WorldProxy::makeBox(const double width, const double height, const double
   return objlabel.str();
 }
 
-string WorldProxy::makeCylinder(const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)
+string WorldProxy::makeCylinder(const double mass, const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name, const bool gravity_enable, const bool collision_enable)
 {
   sdf::SDF cylSDF;
 
@@ -317,6 +325,9 @@ string WorldProxy::makeCylinder(const double radius, const double length, const 
           </material>\
     </visual>\
     <gravity>GRAVITY</gravity>\
+    <inertial>\
+         <mass>MASS</mass>\
+    </inertial>\
     </link>\
       </model>\
   </sdf>");
@@ -361,6 +372,7 @@ string WorldProxy::makeCylinder(const double radius, const double length, const 
   replace(cylSDF_String, "RED", color.r/255.0);
   replace(cylSDF_String, "GREEN", color.g/255.0);
   replace(cylSDF_String, "BLUE", color.b/255.0);
+  replace(cylSDF_String, "MASS", mass);
 
   if (gravity_enable) {replace (cylSDF_String, "GRAVITY", 1);}
   else {replace (cylSDF_String, "GRAVITY", 0);}

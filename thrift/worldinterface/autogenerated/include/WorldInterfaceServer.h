@@ -36,7 +36,7 @@ public:
    * @param collision_enable (optional) enables collision (default true)
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeSphere(const double radius, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
+  virtual std::string makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
   /**
    * Make a box.
    * @param width box width [m]
@@ -50,7 +50,7 @@ public:
    * @param collision_enable (optional) enables collision (default true)
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeBox(const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
+  virtual std::string makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
   /**
    * Make a cylinder.
    * @param radius radius of the cylinder [m]
@@ -63,7 +63,7 @@ public:
    * @param collision_enable (optional) enables collision (default true)
    * @return returns a string that contains the name of the object in the world
    */
-  virtual std::string makeCylinder(const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
+  virtual std::string makeCylinder(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
   /**
    * Make a reference frame.
    * @param size size of the frame [m]

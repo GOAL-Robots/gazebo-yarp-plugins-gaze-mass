@@ -28,7 +28,7 @@ public:
      * @param color color of the sphere
      * @return returns a string that contains the name of the object in the world
      */
-    virtual std::string makeSphere(const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
+    virtual std::string makeSphere(const double mass, const double radius, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
     /**
      * Make a shpere.
      * @param width box width [m]
@@ -38,7 +38,7 @@ public:
      * @param color color of the box
      * @return returns a string that contains the name of the object in the world
      */
-    virtual std::string makeBox(const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
+    virtual std::string makeBox(const double mass ,const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
     /**
      * Make a cylinder.
      * @param radius radius of the cylinder [m]
@@ -47,7 +47,7 @@ public:
      * @param color color of the cylinder
      * @return returns a string that contains the name of the object in the world
      */
-    virtual std::string makeCylinder(const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
+    virtual std::string makeCylinder(const double mass, const double radius, const double length, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name = "", const std::string& object_name = "",const bool gravity_enable = 0, const bool collision_enable = 1);
     /**
      * Set new object pose.
      * @param id object id
@@ -137,7 +137,7 @@ public:
      * @return true if success, false otherwise
      */
     virtual bool rename(const std::string& old_name, const std::string& new_name);
-    
+
     void attachWorldProxy(WorldProxy *p)
     {
         proxy=p;
