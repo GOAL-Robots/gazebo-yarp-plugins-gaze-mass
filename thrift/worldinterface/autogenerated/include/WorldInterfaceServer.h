@@ -27,6 +27,7 @@ public:
   WorldInterfaceServer();
   /**
    * Make a sphere.
+   * @param mass mass of the sphere [m]
    * @param radius radius of the sphere [m]
    * @param pose pose of the sphere [m]
    * @param color color of the sphere
@@ -39,6 +40,7 @@ public:
   virtual std::string makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
   /**
    * Make a box.
+   * @param mass mass of the box [m]
    * @param width box width [m]
    * @param height box height[m]
    * @param thickness box thickness [m]
@@ -53,6 +55,7 @@ public:
   virtual std::string makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = "", const std::string& object_name = "", const bool gravity_enable = 0, const bool collision_enable = 1);
   /**
    * Make a cylinder.
+   * @param mass mass of the cylinder [m]
    * @param radius radius of the cylinder [m]
    * @param length lenght of the cylinder [m]
    * @param pose pose of the cylinder [m]

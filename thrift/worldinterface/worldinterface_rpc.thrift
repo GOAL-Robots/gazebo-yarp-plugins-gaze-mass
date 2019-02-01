@@ -25,6 +25,7 @@ service WorldInterfaceServer {
 
     /** 
     * Make a sphere.
+    * @param mass mass of the sphere [m]
     * @param radius radius of the sphere [m]
     * @param pose pose of the sphere [m]
     * @param color color of the sphere
@@ -39,6 +40,7 @@ service WorldInterfaceServer {
     
     /** 
     * Make a box.
+    * @param mass mass of the box [m]
     * @param width box width [m]
     * @param height box height[m]
     * @param thickness box thickness [m]
@@ -54,6 +56,7 @@ service WorldInterfaceServer {
     
     /** 
     * Make a cylinder.
+    * @param mass mass of the cylinder [m]
     * @param radius radius of the cylinder [m]
     * @param length lenght of the cylinder [m]
     * @param pose pose of the cylinder [m]
