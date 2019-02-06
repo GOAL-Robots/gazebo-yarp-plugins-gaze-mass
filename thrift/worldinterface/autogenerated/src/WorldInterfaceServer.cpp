@@ -1300,6 +1300,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
     if (functionName=="makeSphere") {
       helpString.push_back("std::string makeSphere(const double mass, const double radius, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a sphere. ");
+      helpString.push_back("@param mass mass of the sphere [m] ");
       helpString.push_back("@param radius radius of the sphere [m] ");
       helpString.push_back("@param pose pose of the sphere [m] ");
       helpString.push_back("@param color color of the sphere ");
@@ -1312,6 +1313,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
     if (functionName=="makeBox") {
       helpString.push_back("std::string makeBox(const double mass, const double width, const double height, const double thickness, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a box. ");
+      helpString.push_back("@param mass mass of the box [m] ");
       helpString.push_back("@param width box width [m] ");
       helpString.push_back("@param height box height[m] ");
       helpString.push_back("@param thickness box thickness [m] ");
@@ -1326,6 +1328,7 @@ std::vector<std::string> WorldInterfaceServer::help(const std::string& functionN
     if (functionName=="makeCylinder") {
       helpString.push_back("std::string makeCylinder(const double mass, const double radius, const double length, const Pose& pose, const Color& color, const std::string& frame_name = \"\", const std::string& object_name = \"\", const bool gravity_enable = 0, const bool collision_enable = 1) ");
       helpString.push_back("Make a cylinder. ");
+      helpString.push_back("@param mass mass of the cylinder [m] ");
       helpString.push_back("@param radius radius of the cylinder [m] ");
       helpString.push_back("@param length lenght of the cylinder [m] ");
       helpString.push_back("@param pose pose of the cylinder [m] ");
