@@ -14,6 +14,7 @@
 #include <string>
 #include <iostream>
 #include <ostream>
+#include <fstream>
 
 using namespace std;
 using namespace gazebo;
@@ -1054,51 +1055,28 @@ bool WorldProxy::loadModelFromFile(const std::string& filename)
 {
 
     sdf::SDF modelSDF;
-
-    string modelSDF_string=string(
-            "<?xml version='1.0'?>\
-            <sdf version ='1.4'>\
-            <model name ='sphere'>\
-            <pose>0 0 0 0 0 0</pose>\
-            <link name ='link'>\
-            <pose>2 2 2 0 0 0</pose>\
-            <collision name ='collision'>\
-            <geometry>\
-            <sphere><radius>RADIUS</radius></sphere>\
-            </geometry>\
-            </collision>\
-            <visual name ='visual'>\
-            <geometry>\
-            <sphere><radius>RADIUS</radius></sphere>\
-            </geometry>\
-            <material>\
-            <ambient>0 0 0 1</ambient>\
-            <diffuse>0 0 0 1</diffuse>\
-            </material>\
-            </visual>\
-            <gravity>0</gravity>\
-            <inertial>\
-            <mass>1</mass>\
-            </inertial>\
-            </link>\
-            </model>\
-            </sdf>");
-
+    std::ifstream model_file(filename); 
+    string modelSDF_string((std::istreambuf_iterator<char>(model_file)),
+            std::istreambuf_iterator<char>());
 
     modelSDF.SetFromString(modelSDF_string);
 
     ostringstream objlabel;
     sdf::ElementPtr model = getSDFRoot(modelSDF)->GetElement("model");
-    objlabel << model->GetAttribute("name");
+    objlabel << model->GetAttribute("name")->GetAsString();
     
     world->InsertModelSDF(modelSDF);
 
 #if GAZEBO_MAJOR_VERSION >= 8
-    physics::ModelPtr tmp=world->ModelByName(objlabel.str());
+    physics::ModelPtr tmp = world->ModelByName(objlabel.str());
 #else
-    physics::ModelPtr tmp=world->GetModel(objlabel.str());
+    physics::ModelPtr tmp = world->GetModel(objlabel.str());
 #endif
 
+    std::ofstream log("/tmp/log_GYP");
+    log << objlabel.str().c_str() <<"\n";
+    log << &tmp <<"\n";
+    
     //HERE TMP IS ALWAYS NULL, so the following insertion is not valid. I DON'T KNOW TO FIX IT.
     objects.insert(pair<string,physics::ModelPtr>(objlabel.str(), tmp));
 
