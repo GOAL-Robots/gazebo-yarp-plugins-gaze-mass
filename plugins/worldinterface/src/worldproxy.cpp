@@ -1072,10 +1072,6 @@ bool WorldProxy::loadModelFromFile(const std::string& filename)
 #else
     physics::ModelPtr tmp = world->GetModel(objlabel.str());
 #endif
-
-    std::ofstream log("/tmp/log_GYP");
-    log << objlabel.str().c_str() <<"\n";
-    log << &tmp <<"\n";
     
     //HERE TMP IS ALWAYS NULL, so the following insertion is not valid. I DON'T KNOW TO FIX IT.
     objects.insert(pair<string,physics::ModelPtr>(objlabel.str(), tmp));
