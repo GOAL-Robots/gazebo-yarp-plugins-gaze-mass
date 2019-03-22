@@ -181,7 +181,9 @@ std::string WorldProxy::makeSphere(const double mass,const double radius, const 
     return objlabel.str();
 }
 
-string WorldProxy::makeBox(const double mass,const double width, const double height, const double thickness, const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name, const std::string& object_name,const bool gravity_enable, const bool collision_enable)
+string WorldProxy::makeBox(const double mass,const double width, const double height, const double thickness, 
+        const GazeboYarpPlugins::Pose& pose, const GazeboYarpPlugins::Color& color, const std::string& frame_name,
+        const std::string& object_name,const bool gravity_enable, const bool collision_enable)
 {
     sdf::SDF boxSDF;
 
@@ -209,6 +211,14 @@ string WorldProxy::makeBox(const double mass,const double width, const double he
             <gravity>GRAVITY</gravity>\
             <inertial>\
             <mass>MASS</mass>\
+            <inertia>\
+            <ixx>IXX</ixx>\
+            <ixy>0</ixy>\
+            <ixz>0</ixz>\
+            <iyy>IYY</iyy>\
+            <iyz>0</iyz>\
+            <izz>IZZ</izz>\
+            </inertia>\
             </inertial>\
             </link>\
             </model>\
@@ -253,6 +263,15 @@ string WorldProxy::makeBox(const double mass,const double width, const double he
     replace(boxSDF_String, "THICKNESS", thickness);
 
     replace(boxSDF_String, "MASS", mass);
+    
+    double ixx = mass*(1./12.)*(height*height + thickness*thickness);
+    double iyy = mass*(1./12.)*(width*width + thickness*thickness);
+    double izz = mass*(1./12.)*(width*width + height*height);
+
+
+    replace(boxSDF_String, "IXX", ixx);
+    replace(boxSDF_String, "IYY", iyy);
+    replace(boxSDF_String, "IZZ", izz);
     replace(boxSDF_String, "RED", color.r/255.0);
     replace(boxSDF_String, "GREEN", color.g/255.0);
     replace(boxSDF_String, "BLUE", color.b/255.0);
